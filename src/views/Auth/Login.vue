@@ -38,6 +38,7 @@ export default defineComponent({
         setAuthHeader(token)
         console.log('store', this.$store.commit('auth/SET_ISAUTHENTICATED',true))
         console.log('ingreso',token)
+        await this.$router.push('/home')
       }catch (e){
         this.$q.notify({type:'negative', message: 'Error'})
       }finally {
