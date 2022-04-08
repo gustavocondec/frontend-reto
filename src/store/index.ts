@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import {auth} from "@/views/Auth/auth-state";
+import {member} from "@/views/Member/member-state";
 
 let store = createStore({
   state: {
@@ -11,7 +12,8 @@ let store = createStore({
   actions: {
   },
   modules: {
-    auth
+    auth,
+    member
   }
 })
 

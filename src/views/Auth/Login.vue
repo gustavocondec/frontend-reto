@@ -1,18 +1,19 @@
 <template>
-  <div>
-    <q-card class="q-pa-md">
-      <q-form ref="formLogin" @submit.prevent="login">
-        <q-input v-model="username" label="Username" :rules="usernameRules"></q-input>
-        <q-input v-model="password" label="Password" :rules="passwordRules" ></q-input>
-        <q-btn type="submit" label="Iniciar Sesion" :loading="isLoading"></q-btn>
-      </q-form>
-    </q-card>
-  </div>
+  <div class="container__form">
+      <q-card class="q-pa-md form__login">
+        <p class="text-h5 text-center">Iniciar Sesion</p>
+        <q-form ref="formLogin" @submit.prevent="login">
+          <q-input data-test="username" v-model="username" label="Username" :rules="usernameRules"></q-input>
+          <q-input data-test="password" v-model="password" label="Password" :rules="passwordRules" ></q-input>
+          <div class="text-center"><q-btn data-test="button" type="submit" color="primary" label="Iniciar Sesion" :loading="isLoading"></q-btn></div>
+        </q-form>
+      </q-card>
+    </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {setAuthHeader, signin} from "@/views/Auth/auth-services";
+import {signin} from "@/views/Auth/auth-services";
 
 export default defineComponent({
   name: "Login",
@@ -33,14 +34,21 @@ export default defineComponent({
       if(!isValidated) return ;
       this.isLoading = true
       try {
-        let {data:{token}} = await signin(this.username, this.password)
+        let response  = await signin(this.username, this.password)
+        console.log('response', response)
+        let {data:{token}} =  response
         if(!token) return this.$q.notify({type: 'negative', message:'No hay token'})
-        setAuthHeader(token)
-        console.log('store', this.$store.commit('auth/SET_ISAUTHENTICATED',true))
-        console.log('ingreso',token)
+        this.$store.commit('auth/SET_ISAUTHENTICATED',true)
+        await this.$store.dispatch('auth/setAuthHeaderRequest', token)
+        await this.$store.dispatch('auth/getUserInfo')
+        this.$q.notify({type:'positive',message:`Bienvenido(a) ${this.$store?.state?.auth?.user?.name}`})
         await this.$router.push('/home')
       }catch (e){
-        this.$q.notify({type:'negative', message: 'Error'})
+        //@ts-ignore
+        let message = e?.response?.data?.message
+        this.$q.notify({type:'negative',
+          message:message|| 'Ocurrio un error'
+        })
       }finally {
         this.isLoading = false
       }
@@ -49,6 +57,25 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="sass">
+.container__form
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  height: 90vh
+.form__login
+  width: 90%
 
+@media only screen and (min-width: 600px)
+  .form__login
+    width: 60%
+
+@media only screen and (min-width: 800px)
+  .form__login
+    width: 50%
+
+@media only screen and (min-width: 1000px)
+  .form__login
+    width: 30%
 </style>

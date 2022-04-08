@@ -1,24 +1,12 @@
-# frontend
+# frontend prueba newcombin
 
-## Project setup
-```
-npm install
-```
+Hecho con Vuejs y componentes de diseño de Quasar Framework
+Uso:
+    Vue, Vuex, Router, Axios
 
-### Compiles and hot-reloads for development
+
+### Levantar el servidor
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Abrir el navegador en la ruta: http://localhost:8080/

@@ -6,7 +6,6 @@ import { Quasar } from 'quasar'
 // @ts-ignore
 import quasarUserOptions from './quasar-user-options'
 
-console.log('llegaaa', quasarUserOptions)
 createApp(App).use(Quasar, quasarUserOptions).use(store)
   .use(router).mount('#app')
 

@@ -1,13 +1,15 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import {authRoutes} from "@/views/Auth/auth-routes";
+import {memberRoutes} from "@/views/Member/member-routes";
 
 const routes: Array<RouteRecordRaw> = [
+  ...authRoutes,
+  ...memberRoutes,
   {
-    path:'/home',
-    name: 'home',
-    component: ()=>import('@/views/Home/Home.vue')
-  },
-  ...authRoutes
+    path:'/:pathMatch(.*)',
+    redirect: '/member'
+  }
+
 ]
 
 const router = createRouter({

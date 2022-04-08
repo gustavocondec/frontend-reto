@@ -12,89 +12,76 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Sistemita de Registros
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div v-show="isAuthenticated">
+          <span  style="margin-right: 10px">Usuario: {{userName}}</span>
+          |
+          <span style="margin-left: 10px">Admnistador: {{isAdmin}}</span>
+        </div>
+
       </q-toolbar>
     </q-header>
 
     <q-drawer
+        v-if="isAuthenticated"
         v-model="leftDrawerOpen"
-        show-if-above
         bordered
         class="bg-grey-2"
     >
       <q-list>
-        <q-item-label header>Essential Links</q-item-label>
-        <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
+        <q-item-label header>Links</q-item-label>
+        <q-item clickable @click.prevent="$router.push('/member')">
           <q-item-section avatar>
             <q-icon name="school" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Docs</q-item-label>
-            <q-item-label caption>quasar.dev</q-item-label>
+            <q-item-label>Members</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://github.com/quasarframework/">
+        <q-item style="position: absolute; bottom: 0;width: 100%; color: red; font-weight: bold" clickable @click="logout">
           <q-item-section avatar>
-            <q-icon name="code" />
+            <q-icon name="logout" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Github</q-item-label>
-            <q-item-label caption>github.com/quasarframework</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
-          <q-item-section avatar>
-            <q-icon name="chat" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Discord Chat Channel</q-item-label>
-            <q-item-label caption>chat.quasar.dev</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
-          <q-item-section avatar>
-            <q-icon name="forum" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Forum</q-item-label>
-            <q-item-label caption>forum.quasar.dev</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://twitter.com/quasarframework">
-          <q-item-section avatar>
-            <q-icon name="rss_feed" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Twitter</q-item-label>
-            <q-item-label caption>@quasarframework</q-item-label>
+            <q-item-label>Cerrar Sesion</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
 
     <q-page-container>
-      <HelloWorld />
+      <router-view></router-view>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import { ref } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
-
+import { ref, computed } from 'vue'
+import {useStore} from "vuex";
+import {useRouter} from 'vue-router'
 export default {
   name: 'default',
 
-  components: {
-    HelloWorld
-  },
-
   setup () {
+    const $store = useStore()
+    const $router = useRouter()
+
+    const userName = computed(()=>$store?.state?.auth?.user?.name||'User')
+    const isAdmin = computed(()=>$store?.state?.auth?.user?.admin?'Si':'No')
+    const isAuthenticated = computed(()=>$store.state.auth.isAuthenticated)
+
+    const logout =()=>{
+      $store.dispatch('auth/logout')
+      $store.commit('member/SET_MEMBERS', [])
+      $router.push('/login')
+    }
+
     return {
-      leftDrawerOpen: ref(false)
+      leftDrawerOpen: ref(false),
+      userName, isAdmin, isAuthenticated,
+      logout
     }
   }
 }
