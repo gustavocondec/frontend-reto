@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Sistemita de Registros
+          Sistemita de Registros de Miembros
         </q-toolbar-title>
 
         <div v-show="isAuthenticated">

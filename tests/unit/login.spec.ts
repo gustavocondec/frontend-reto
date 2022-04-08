@@ -1,6 +1,15 @@
 import {mount} from '@vue/test-utils'
 import Login from "@/views/Auth/Login.vue";
-import {QInput} from "quasar";
+import {Quasar} from "quasar";
+
+const wrapperFactory = ()=> {
+  let mouted = mount(Login,{
+    global: {
+      plugins: [Quasar]
+    }
+  })
+  return mouted
+}
 
 describe('Login.vue', ()=>{
   test('Should be rendered', ()=>{
@@ -10,7 +19,8 @@ describe('Login.vue', ()=>{
     expect(text).toContain('iniciar sesion')
   })
   test('Must be login with username and password',async ()=>{
-    const wrapper = mount(Login)
+
+    const wrapper = wrapperFactory()
 
     let inputUsername = wrapper.find('[data-test=username]')
     let inputPassword = wrapper.find('[data-test=password]')
