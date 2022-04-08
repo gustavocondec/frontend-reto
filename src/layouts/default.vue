@@ -3,12 +3,12 @@
     <q-header elevated class="glossy">
       <q-toolbar>
         <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-          icon="menu"
+            flat
+            dense
+            round
+            @click="leftDrawerOpen = !leftDrawerOpen"
+            aria-label="Menu"
+            icon="menu"
         />
 
         <q-toolbar-title>
@@ -20,10 +20,10 @@
     </q-header>
 
     <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      class="bg-grey-2"
+        v-model="leftDrawerOpen"
+        show-if-above
+        bordered
+        class="bg-grey-2"
     >
       <q-list>
         <q-item-label header>Essential Links</q-item-label>
@@ -76,7 +76,7 @@
     </q-drawer>
 
     <q-page-container>
-  <router-view></router-view>
+      <HelloWorld />
     </q-page-container>
   </q-layout>
 </template>
@@ -86,7 +86,7 @@ import { ref } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'LayoutDefault',
+  name: 'default',
 
   components: {
     HelloWorld
