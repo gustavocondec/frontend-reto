@@ -1,4 +1,4 @@
-# Frontend prueba newcombin
+# Frontend reto
 
 Hecho con Vuejs y componentes de diseño de Quasar Framework
 Uso:
